@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  java-docker:
+    container_name: java-docker
+    build: .
+    restart: always
+    image: java-docker:1.0.0
+    ports:
+      - 8090:8080
+    depends_on:
+      - mysql-docker
+    environment:
+      - DBHOST=mysql-docker
+      - DBPORT=3306
+    networks:
+      - javanetwork
+
+  mysql-docker:
+    container_name: mysql-docker
+    image: mysql:latest
+    ports:
+      - 3307:3306
+    networks:
+      - javanetwork
+    environment:
+      - MYSQL_ROOT_PASSWORD=mitrais
+      - MYSQL_DATABASE=rental
+      - MYSQL_HOST=mysql-docker
+  
+networks:
+  javanetwork:
+    name: javanetwork
+
+
